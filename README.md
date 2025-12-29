@@ -30,6 +30,8 @@ cd Controle
 npm install
 ```
 
+**Nota**: O `package-lock.json` está incluído no repositório para garantir versões consistentes das dependências.
+
 3. Execute a aplicação:
 ```bash
 npm start
