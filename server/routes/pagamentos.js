@@ -2,6 +2,16 @@ const express = require('express');
 const router = express.Router();
 const Pagamento = require('../models/Pagamento');
 
+// Search pagamentos (must come before /:id route)
+router.get('/search/filter', (req, res) => {
+  Pagamento.search(req.query, (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows);
+  });
+});
+
 // Get all pagamentos
 router.get('/', (req, res) => {
   Pagamento.getAll((err, rows) => {
@@ -58,16 +68,6 @@ router.delete('/:id', (req, res) => {
       return res.status(404).json({ error: 'Pagamento não encontrado' });
     }
     res.json({ message: 'Pagamento excluído com sucesso' });
-  });
-});
-
-// Search pagamentos
-router.get('/search/filter', (req, res) => {
-  Pagamento.search(req.query, (err, rows) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.json(rows);
   });
 });
 
