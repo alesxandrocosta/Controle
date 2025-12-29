@@ -4,11 +4,11 @@ import './App.css';
 
 // Sample initial data
 const initialMembers = [
-  { id: '1', name: 'João Silva', status: 'Pendente', valor: 'R$ 1.500,00', vencimento: '15/01/2025' },
-  { id: '2', name: 'Maria Santos', status: 'Pendente', valor: 'R$ 2.300,00', vencimento: '20/01/2025' },
-  { id: '3', name: 'Pedro Oliveira', status: 'Pendente', valor: 'R$ 1.800,00', vencimento: '18/01/2025' },
-  { id: '4', name: 'Ana Costa', status: 'Pendente', valor: 'R$ 2.100,00', vencimento: '25/01/2025' },
-  { id: '5', name: 'Carlos Ferreira', status: 'Pendente', valor: 'R$ 1.900,00', vencimento: '22/01/2025' },
+  { id: '1', name: 'João Silva', status: 'Pendente', valor: 'R$ 1.500,00', vencimento: '15/01/2025', telefone: '5511999999999' },
+  { id: '2', name: 'Maria Santos', status: 'Pendente', valor: 'R$ 2.300,00', vencimento: '20/01/2025', telefone: '5511988888888' },
+  { id: '3', name: 'Pedro Oliveira', status: 'Pendente', valor: 'R$ 1.800,00', vencimento: '18/01/2025', telefone: '5511977777777' },
+  { id: '4', name: 'Ana Costa', status: 'Pendente', valor: 'R$ 2.100,00', vencimento: '25/01/2025', telefone: '5511966666666' },
+  { id: '5', name: 'Carlos Ferreira', status: 'Pendente', valor: 'R$ 1.900,00', vencimento: '22/01/2025', telefone: '5511955555555' },
 ];
 
 function App() {
@@ -64,7 +64,7 @@ function App() {
 
   const handleSendBoleto = (member) => {
     const message = `Olá ${member.name}, seu boleto no valor de ${member.valor} com vencimento em ${member.vencimento} está disponível.`;
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${member.telefone}&text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -74,10 +74,15 @@ function App() {
       return;
     }
     
+    const confirmMessage = `Você está prestes a enviar ${members.length} boleto(s) via WhatsApp. Deseja continuar?`;
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+    
     members.forEach((member, index) => {
       setTimeout(() => {
         handleSendBoleto(member);
-      }, index * 1000); // Delay between each message
+      }, index * 2000); // 2 seconds delay between each message to avoid rate limiting
     });
   };
 
